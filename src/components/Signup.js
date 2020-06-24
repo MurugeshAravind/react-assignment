@@ -30,14 +30,14 @@ export default function Signup() {
       setIsSubmit(true)
       setTimeout(() => {
         setIsSubmit(false)
-      }, 3000);
+      }, 1500);
       setFormData(initialState)
     } else {
       setIsSubmit(false)
       setIsError(true)
       setTimeout(() => {
         setIsError(false)
-      }, 3000);
+      }, 1500);
     }
   }
   return (
