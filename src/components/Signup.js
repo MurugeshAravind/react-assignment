@@ -1,11 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Signup() {
+  const initialState = {
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: ""
+  }
+  const [formData, setFormData] = useState(initialState)
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  function handleChanges(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value
+      }
+    });
+  }
   function handleSignup(e) {
     e.preventDefault();
+    console.log('Form data after submit-->', formData)
+    if (formData.email !== "" && formData.name !== ""
+      && formData.password !== ""
+      && formData.confirmPassword !== "") {
+      console.log('nothing is empty')
+      setIsSubmit(true)
+      setTimeout(() => {
+        setIsSubmit(false)
+      }, 3000);
+      setFormData(initialState)
+    } else {
+      setIsSubmit(false)
+      setIsError(true)
+      setTimeout(() => {
+        setIsError(false)
+      }, 3000);
+    }
   }
   return (
     <div className="text-left w-75 mx-auto p-3">
+      <p className="alert alert-danger" style={{ display: isError ? 'block' : 'none' }}>Kindly fill all the fields to submit</p>
+      <p className="alert alert-success" style={{ display: isSubmit ? 'block' : 'none' }}>Form is submitted successfully</p>
       <div className="jumbotron">
         <div className="container">
           <form onSubmit={handleSignup}>
@@ -19,6 +57,8 @@ export default function Signup() {
                 id="email"
                 name="email"
                 aria-describedby="email"
+                onChange={handleChanges}
+                value={formData.email}
               />
             </div>
             <div className="form-group">
@@ -31,6 +71,8 @@ export default function Signup() {
                 id="name"
                 name="name"
                 aria-describedby="name"
+                onChange={handleChanges}
+                value={formData.name}
               />
             </div>
             <div className="form-group">
@@ -42,17 +84,23 @@ export default function Signup() {
                 name="password"
                 className="form-control"
                 id="password"
+                aria-describedby="password"
+                onChange={handleChanges}
+                value={formData.password}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="confirm password">
+              <label htmlFor="confirmPassword">
                 <strong>Confirm Password:</strong>
               </label>
               <input
                 type="password"
-                name="confirm password"
+                name="confirmPassword"
                 className="form-control"
-                id="confirm password"
+                id="confirmPassword"
+                aria-describedby="confirmPassword"
+                onChange={handleChanges}
+                value={formData.confirmPassword}
               />
             </div>
             <button type="submit" className="btn btn-success">
