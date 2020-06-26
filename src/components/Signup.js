@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import store from "../store";
 
-export default function Signup() {
+function Signup() {
   const initialState = {
     email: "",
     name: "",
@@ -31,6 +32,11 @@ export default function Signup() {
       setTimeout(() => {
         setIsSubmit(false)
       }, 1500);
+      var action = {
+        type: "SIGNUP",
+        payload: formData
+      };
+      store.dispatch(action);
       setFormData(initialState)
     } else {
       setIsSubmit(false)
@@ -40,10 +46,11 @@ export default function Signup() {
       }, 1500);
     }
   }
+
   return (
     <div className="text-left w-75 mx-auto p-3">
-      <p className="alert alert-danger" style={{ display: isError ? 'block' : 'none' }}>Kindly fill all the fields to submit</p>
-      <p className="alert alert-success" style={{ display: isSubmit ? 'block' : 'none' }}>Form is submitted successfully</p>
+      <p className="alert alert-danger text-center" style={{ display: isError ? 'block' : 'none' }}>Kindly fill all the fields to submit!</p>
+      <p className="alert alert-success text-center" style={{ display: isSubmit ? 'block' : 'none' }}>Form is submitted successfully!</p>
       <div className="jumbotron">
         <div className="container">
           <form onSubmit={handleSignup}>
@@ -112,3 +119,4 @@ export default function Signup() {
     </div>
   );
 }
+export default Signup;

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Home() {
+export default function Home(props) {
+  let homeProps = props.homeProps
+  console.log(homeProps)
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
   const [searchedPost, setSearchedPost] = useState([]);
-
-  var param = '';
-
+  const [name, setName] = useState("Please Login/Signup")
+  let param = '';
   function handleSearch(e) {
     const { value } = e.target;
-    console.log(value);
     param = value;
   }
 
@@ -44,12 +44,18 @@ export default function Home() {
     fetchPosts();
   }, []);
 
+  useEffect(() => {
+    if (homeProps) {
+      setName(homeProps.name)
+    }
+  }, [name])
+
   var firstBatch = posts.filter((item, index) => index < 10);
   var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
   console.log('first 10 elements-->', firstBatch);
   console.log('Last 10 elements-->', lastBatch);
-  function displayList(prop) {
-    return prop.map((x) => (
+  function displayList(data) {
+    return data.map((x) => (
       <li key={x.id} id={x.id} title={x.title}>
         {x.body}
       </li>
@@ -60,7 +66,7 @@ export default function Home() {
       <div className="jumbotron">
         <div className="container">
           <h1 className="display-4">
-            <strong>Welcome, Please Login/Signup</strong>
+            <strong>Welcome {name}</strong>
           </h1>
         </div>
       </div>
