@@ -11,8 +11,7 @@ import store from "../store";
 var signupDetails = [];
 var loginDetails;
 var loginName;
-
-export default function App() {
+function App() {
   const [name, setName] = useState(false)
   function getSignupDetails() {
     store.subscribe(() => {
@@ -91,3 +90,6 @@ export default function App() {
     </div>
   );
 }
+
+
+export default App;

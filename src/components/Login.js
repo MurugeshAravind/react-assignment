@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import store from "../store";
+import { Redirect } from "react-router-dom";
 
 function Login(props) {
   console.log(props.loginProps)
@@ -113,6 +114,7 @@ function Login(props) {
           </form>
         </div>
       </div>
+      {isSubmit ? <Redirect to="/home"/> : null}
     </div>
   );
 }
