@@ -78,42 +78,46 @@ export default function Home(props) {
             placeholder="Search"
             aria-label="Search"
             onChange={handleSearch}
+            style={{ display: name.includes('Login/Signup') ? 'none' : 'block' }}
           />
           <button
             className="btn btn-outline-success my-2 my-sm-0"
             type="submit"
             onClick={search}
+            style={{ display: name.includes('Login/Signup') ? 'none' : 'block' }}
           >
             Search
           </button>
         </form>
       </div>
-      <ul style={{ display: searchedPost.length > 0 ? 'block' : 'none' }}>
-        <strong>
-          <u>
-            <em>Post ID {searchedPost.map((x) => x.id)}</em>
+      <div style={{ display: name.includes('Login/Signup') ? 'none' : 'block' }}>
+        <ul style={{ display: searchedPost.length > 0 ? 'block' : 'none' }}>
+          <strong>
+            <u>
+              <em>Post ID {searchedPost.map((x) => x.id)}</em>
+            </u>
+          </strong>
+          {searchedPost.length > 0 ? displayList(searchedPost) : null}
+        </ul>
+        <hr />
+        <ul>
+          <strong>
+            <u>
+              <em>First</em> 10 elements in the array
           </u>
-        </strong>
-        {searchedPost.length > 0 ? displayList(searchedPost) : null}
-      </ul>
-      <hr />
-      <ul>
-        <strong>
-          <u>
-            <em>First</em> 10 elements in the array
+          </strong>
+          {displayList(firstBatch)}
+        </ul>
+        <hr />
+        <ul>
+          <strong>
+            <u>
+              <em>Last</em> 10 elements in the array
           </u>
-        </strong>
-        {displayList(firstBatch)}
-      </ul>
-      <hr />
-      <ul>
-        <strong>
-          <u>
-            <em>Last</em> 10 elements in the array
-          </u>
-        </strong>
-        {displayList(lastBatch)}
-      </ul>
+          </strong>
+          {displayList(lastBatch)}
+        </ul>
+      </div>
     </div>
   );
 }
