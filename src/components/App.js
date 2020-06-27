@@ -32,9 +32,6 @@ function App() {
   useEffect(() => {
     getSignupDetails()
     getLoginDetails()
-    return () => {
-      setName(false)
-    }
   }, [])
 
   return (
