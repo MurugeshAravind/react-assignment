@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+var param;
+
 export default function Home(props) {
   let homeProps = props.homeProps
   console.log(homeProps)
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
   const [searchedPost, setSearchedPost] = useState([]);
   const [name, setName] = useState("Please Login/Signup")
-  let param = '';
   function handleSearch(e) {
     const { value } = e.target;
     param = value;
