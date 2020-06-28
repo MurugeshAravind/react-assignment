@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import store from "../store";
+import React, { useState } from 'react';
+import store from '../store';
 
 function Signup() {
   const initialState = {
-    email: "",
-    name: "",
-    password: "",
-    confirmPassword: ""
-  }
-  const [formData, setFormData] = useState(initialState)
+    email: '',
+    name: '',
+    password: '',
+    confirmPassword: '',
+  };
+  const [formData, setFormData] = useState(initialState);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -17,40 +17,53 @@ function Signup() {
     setFormData((prev) => {
       return {
         ...prev,
-        [name]: value
-      }
+        [name]: value,
+      };
     });
   }
   function handleSignup(e) {
     e.preventDefault();
-    console.log('Form data after submit-->', formData)
-    if (formData.email !== "" && formData.name !== ""
-      && formData.password !== ""
-      && formData.confirmPassword !== "") {
-      console.log('nothing is empty')
-      setIsSubmit(true)
+    console.log('Form data after submit-->', formData);
+    if (
+      formData.email !== '' &&
+      formData.name !== '' &&
+      formData.password !== '' &&
+      formData.confirmPassword !== ''
+    ) {
+      console.log('nothing is empty');
+      setIsSubmit(true);
       setTimeout(() => {
-        setIsSubmit(false)
+        setIsSubmit(false);
       }, 1500);
       var action = {
-        type: "SIGNUP",
-        payload: formData
+        type: 'SIGNUP',
+        payload: formData,
       };
       store.dispatch(action);
-      setFormData(initialState)
     } else {
-      setIsSubmit(false)
-      setIsError(true)
+      setIsSubmit(false);
+      setIsError(true);
       setTimeout(() => {
-        setIsError(false)
+        setIsError(false);
       }, 1500);
     }
+    setFormData(initialState);
   }
 
   return (
     <div className="text-left w-75 mx-auto p-3">
-      <p className="alert alert-danger text-center" style={{ display: isError ? 'block' : 'none' }}>Kindly fill all the fields to submit!</p>
-      <p className="alert alert-success text-center" style={{ display: isSubmit ? 'block' : 'none' }}>Form is submitted successfully!</p>
+      <p
+        className="alert alert-danger text-center"
+        style={{ display: isError ? 'block' : 'none' }}
+      >
+        Kindly fill all the fields to submit!
+      </p>
+      <p
+        className="alert alert-success text-center"
+        style={{ display: isSubmit ? 'block' : 'none' }}
+      >
+        Form is submitted successfully!
+      </p>
       <div className="jumbotron">
         <div className="container">
           <form onSubmit={handleSignup}>

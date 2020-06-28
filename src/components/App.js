@@ -1,38 +1,48 @@
-import React, { useState, useEffect } from "react";
-import "../styles.css";
-import { Link, Route, Redirect, Switch } from "react-router-dom";
-import PersonIcon from "@material-ui/icons/Person";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Home from "./Home";
-import Login from "./Login";
-import Signup from "./Signup";
-import store from "../store";
+import React, { useState, useEffect } from 'react';
+import '../styles.css';
+import { Link, Route, Redirect, Switch } from 'react-router-dom';
+import PersonIcon from '@material-ui/icons/Person';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Home from './Home';
+import Login from './Login';
+import Signup from './Signup';
+import store from '../store';
+import useIsMounted from '../useIsMounted';
 
 var signupDetails = [];
 var loginDetails;
 var loginName;
+
 function App() {
-  const [name, setName] = useState(false)
+  const [name, setName] = useState(false);
+  const isMounted = useIsMounted();
+
   function getSignupDetails() {
     store.subscribe(() => {
-      signupDetails.push(store.getState().data)
-    })
+      console.log('signup state-->', store.getState().data);
+      signupDetails.push(store.getState().data);
+    });
   }
 
   function getLoginDetails() {
     store.subscribe(() => {
-      loginDetails = (store.getState().loginData)
-      console.log('loginDetails-->', loginDetails)
+      console.log('login state-->', store.getState().loginData);
+      loginDetails = store.getState().loginData;
+      console.log('loginDetails-->', loginDetails);
       if (loginDetails) {
-        setName(true)
+        setName(true);
         loginName = loginDetails.name;
       }
-    })
+    });
   }
+
   useEffect(() => {
-    getSignupDetails()
-    getLoginDetails()
-  }, [])
+    console.log('component mounted-->', isMounted);
+    if (isMounted.current) {
+      getSignupDetails();
+      getLoginDetails();
+    }
+  }, [isMounted]);
 
   return (
     <div>
@@ -60,17 +70,26 @@ function App() {
             </li>
           </ul>
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item" style={{ display: name ? 'none' : 'block' }}>
+            <li
+              className="nav-item"
+              style={{ display: name ? 'none' : 'block' }}
+            >
               <Link className="nav-link" to="/signup">
                 <PersonIcon /> Signup
               </Link>
             </li>
-            <li className="nav-item" style={{ display: name ? 'none' : 'block' }}>
+            <li
+              className="nav-item"
+              style={{ display: name ? 'none' : 'block' }}
+            >
               <Link className="nav-link" to="/login">
                 <ExitToAppIcon /> Login
               </Link>
             </li>
-            <li className="nav-item" style={{ display: name ? 'block' : 'none' }}>
+            <li
+              className="nav-item"
+              style={{ display: name ? 'block' : 'none' }}
+            >
               <Link className="nav-link" to="/home">
                 {loginName}
               </Link>
@@ -82,11 +101,13 @@ function App() {
         <Route exact path="/" render={() => <Redirect to="/home" />} />
         <Route path="/home" render={() => <Home homeProps={loginDetails} />} />
         <Route path="/signup" component={Signup} />
-        <Route path="/login" render={() => <Login loginProps={signupDetails} />} />
+        <Route
+          path="/login"
+          render={() => <Login loginProps={signupDetails} />}
+        />
       </Switch>
     </div>
   );
 }
-
 
 export default App;
