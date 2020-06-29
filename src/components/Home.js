@@ -6,6 +6,7 @@ var param;
 
 export default function Home(props) {
   let homeProps = props.homeProps
+  console.log('homeprops-->', homeProps);
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
   const [searchedPost, setSearchedPost] = useState([]);
   const [name, setName] = useState("Please Login/Signup")
@@ -62,7 +63,7 @@ export default function Home(props) {
   // Changing the name based on the home props
   useEffect(() => {
     if (homeProps) {
-      setName(homeProps.name)
+      setName(homeProps[0].name)
     }
   }, [name])
 

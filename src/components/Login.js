@@ -43,7 +43,7 @@ function Login(props) {
         console.log('success');
         var action = {
           type: 'LOGIN',
-          payload: loginProps.find((x) => x.email === loginData.email),
+          payload: loginProps.filter(x => (x.email && x.password) === (loginData.email && loginData.password)),
         };
         store.dispatch(action);
         setIsSubmit(true);

@@ -9,9 +9,9 @@ function updateStore(state = initialState, action) {
       });
       return updatedSignupState;
     case 'LOGIN':
-      var updatedLoginState = Object.assign(
-        {},
+      var updatedLoginState = Object.assign({}, state,
         {
+          ...state,
           loginData: action.payload,
         },
       );

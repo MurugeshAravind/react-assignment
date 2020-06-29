@@ -31,7 +31,7 @@ function App() {
       console.log('loginDetails-->', loginDetails);
       if (loginDetails) {
         setName(true);
-        loginName = loginDetails.name;
+        loginName = loginDetails[0].name;
       }
     });
   }
