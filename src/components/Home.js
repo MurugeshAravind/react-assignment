@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+var param;
+
 export default function Home(props) {
   let homeProps = props.homeProps
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
@@ -9,7 +11,6 @@ export default function Home(props) {
 
   var firstBatch = posts.filter((item, index) => index < 10);
   var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
-  var param;
 
   function handleSearch(e) {
     const { value } = e.target;
