@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-var param;
-
 export default function Home(props) {
   let homeProps = props.homeProps
-  console.log(homeProps)
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
   const [searchedPost, setSearchedPost] = useState([]);
   const [name, setName] = useState("Please Login/Signup")
+
+  var firstBatch = posts.filter((item, index) => index < 10);
+  var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
+  var param;
+
   function handleSearch(e) {
     const { value } = e.target;
     param = value;
@@ -50,16 +52,14 @@ export default function Home(props) {
     fetchPosts();
   }, []);
 
+  // Changing the name based on the home props
   useEffect(() => {
     if (homeProps) {
       setName(homeProps.name)
     }
   }, [name])
 
-  var firstBatch = posts.filter((item, index) => index < 10);
-  var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
-  console.log('first 10 elements-->', firstBatch);
-  console.log('Last 10 elements-->', lastBatch);
+  // Displaying the list of elements
   function displayList(data) {
     return data.map((x) => (
       <li key={x.id} id={x.id} title={x.title}>
@@ -67,6 +67,7 @@ export default function Home(props) {
       </li>
     ));
   }
+
   return (
     <div className="text-left p-3 w-75 mx-auto">
       <div className="jumbotron">
