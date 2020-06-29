@@ -11,6 +11,7 @@ function Signup() {
   const [formData, setFormData] = useState(initialState);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
 
   function handleChanges(e) {
     const { name, value } = e.target;
@@ -30,16 +31,25 @@ function Signup() {
       formData.password !== '' &&
       formData.confirmPassword !== ''
     ) {
-      console.log('nothing is empty');
-      setIsSubmit(true);
-      setTimeout(() => {
+
+      if (formData.password !== formData.confirmPassword) {
         setIsSubmit(false);
-      }, 1500);
-      var action = {
-        type: 'SIGNUP',
-        payload: formData,
-      };
-      store.dispatch(action);
+        setIsConfirmPasswordError(true);
+        setTimeout(() => {
+          setIsConfirmPasswordError(false);
+        }, 1500);
+      } else {
+        setIsSubmit(true);
+        setTimeout(() => {
+          setIsSubmit(false);
+        }, 1500);
+        var action = {
+          type: 'SIGNUP',
+          payload: formData,
+        };
+        store.dispatch(action);
+        setFormData(initialState);
+      }
     } else {
       setIsSubmit(false);
       setIsError(true);
@@ -47,7 +57,6 @@ function Signup() {
         setIsError(false);
       }, 1500);
     }
-    setFormData(initialState);
   }
 
   return (
@@ -57,6 +66,12 @@ function Signup() {
         style={{ display: isError ? 'block' : 'none' }}
       >
         Kindly fill all the fields to submit!
+      </p>
+      <p
+        className="alert alert-danger text-center"
+        style={{ display: isConfirmPasswordError ? 'block' : 'none' }}
+      >
+        Confirm password and password must be same.
       </p>
       <p
         className="alert alert-success text-center"
