@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import useIsMounted from '../useIsMounted';
 
 var param;
 
@@ -11,6 +12,9 @@ export default function Home(props) {
 
   var firstBatch = posts.filter((item, index) => index < 10);
   var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
+
+  const isMounted = useIsMounted();
+  console.log('App mounted is-->', isMounted.current)
 
   function handleSearch(e) {
     const { value } = e.target;
@@ -50,8 +54,10 @@ export default function Home(props) {
 
   // Calling the API when the page is loaded initially using the useEffect Hook
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    if(isMounted.current) {
+      fetchPosts();
+    }
+  }, [isMounted]);
 
   // Changing the name based on the home props
   useEffect(() => {
