@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles.css';
 import { Link, Route, Redirect, Switch } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -40,7 +39,7 @@ function App() {
 useEffect(() => {
  getSignupDetails()
  getLoginDetails() 
-})
+}, [])
 
   return (
     <div>
