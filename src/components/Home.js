@@ -16,6 +16,11 @@ export default function Home(props) {
 
   function search(e) {
     e.preventDefault();
+    searchPost()
+  }
+
+  // Fetching only the searched posts through the Id
+  function searchPost() {
     axios
       .get(`http://jsonplaceholder.typicode.com/posts?id=${param}`)
       .then((res) => {

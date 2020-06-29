@@ -16,6 +16,7 @@ var loginName;
 function App() {
   const [name, setName] = useState(false);
   const isMounted = useIsMounted();
+  console.log('App mounted is-->', isMounted.current)
 
   function getSignupDetails() {
     store.subscribe(() => {
@@ -36,13 +37,10 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    console.log('component mounted-->', isMounted);
-    if (isMounted.current) {
-      getSignupDetails();
-      getLoginDetails();
-    }
-  }, [isMounted]);
+useEffect(() => {
+ getSignupDetails()
+ getLoginDetails() 
+})
 
   return (
     <div>
