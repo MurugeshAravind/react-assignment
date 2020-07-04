@@ -43,13 +43,14 @@ function Login(props) {
         console.log('success');
         var action = {
           type: 'LOGIN',
-          payload: loginProps.filter(x => (x.email && x.password) === (loginData.email && loginData.password)),
+          payload: loginProps.filter(
+            (x) =>
+              (x.email && x.password) ===
+              (loginData.email && loginData.password),
+          ),
         };
         store.dispatch(action);
         setIsSubmit(true);
-        setTimeout(() => {
-          setIsSubmit(false);
-        }, 1500);
       } else {
         console.log('failure');
         setIsSubmit(false);
@@ -130,10 +131,10 @@ function Login(props) {
             <button type="submit" className="btn btn-success">
               Login
             </button>
+            {isSubmit && <Redirect to="/home" />}
           </form>
         </div>
       </div>
-      {isSubmit ? <Redirect to="/home" /> : null}
     </div>
   );
 }
