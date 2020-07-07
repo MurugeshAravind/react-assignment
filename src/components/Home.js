@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useIsMounted from '../useIsMounted';
+import "../styles.css"
 
 var param;
 
@@ -10,6 +11,7 @@ export default function Home(props) {
   const [posts, setPosts] = useState([]); // Using the state hooks to store the data
   const [searchedPost, setSearchedPost] = useState([]);
   const [name, setName] = useState("Please Login/Signup")
+  const [inValidSearch, setInValidSearch] = useState(false);
 
   var firstBatch = posts.filter((item, index) => index < 10);
   var lastBatch = posts.slice(Math.max(posts.length - 10, 1));
@@ -19,7 +21,16 @@ export default function Home(props) {
 
   function handleSearch(e) {
     const { value } = e.target;
-    param = value;
+    let pattern = new RegExp(/(^100$)|^[1-9]\d?$/)
+    console.log(pattern.test(value))
+    let res = pattern.test(value)
+    if(res) {
+      param = value;
+      setInValidSearch(false)
+    } else {
+      param = ""
+      setInValidSearch(true)
+    }
   }
 
   function search(e) {
@@ -100,10 +111,14 @@ export default function Home(props) {
             type="submit"
             onClick={search}
             style={{ display: name.includes('Login/Signup') ? 'none' : 'block' }}
+            disabled={inValidSearch ? "disabled" : null}
           >
             Search
           </button>
         </form>
+        <div className="text-center mt-2">
+          {inValidSearch && <p className="text-danger para">Kindly enter valid digits from 1 to 100</p>}
+        </div>
       </div>
       <div style={{ display: name.includes('Login/Signup') ? 'none' : 'block' }}>
         <ul style={{ display: searchedPost.length > 0 ? 'block' : 'none' }}>

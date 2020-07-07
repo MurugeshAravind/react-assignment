@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import store from '../store';
+import React, { useState } from "react";
+import store from "../store";
 
 function Signup() {
   const initialState = {
-    email: '',
-    name: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: "",
   };
   const [formData, setFormData] = useState(initialState);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -22,29 +22,25 @@ function Signup() {
       };
     });
   }
+
   function handleSignup(e) {
     e.preventDefault();
-    console.log('Form data after submit-->', formData);
+    console.log("Form data after submit-->", formData);
     if (
-      formData.email !== '' &&
-      formData.name !== '' &&
-      formData.password !== '' &&
-      formData.confirmPassword !== ''
+      formData.email !== "" &&
+      formData.name !== "" &&
+      formData.password !== "" &&
+      formData.confirmPassword !== ""
     ) {
-
       if (formData.password !== formData.confirmPassword) {
         setIsSubmit(false);
         setIsConfirmPasswordError(true);
-        setTimeout(() => {
-          setIsConfirmPasswordError(false);
-        }, 1500);
       } else {
         setIsSubmit(true);
-        setTimeout(() => {
-          setIsSubmit(false);
-        }, 1500);
+        setIsError(false);
+        setIsConfirmPasswordError(false);
         var action = {
-          type: 'SIGNUP',
+          type: "SIGNUP",
           payload: formData,
         };
         store.dispatch(action);
@@ -53,9 +49,6 @@ function Signup() {
     } else {
       setIsSubmit(false);
       setIsError(true);
-      setTimeout(() => {
-        setIsError(false);
-      }, 1500);
     }
   }
 
@@ -63,19 +56,19 @@ function Signup() {
     <div className="text-left w-75 mx-auto p-3">
       <p
         className="alert alert-danger text-center"
-        style={{ display: isError ? 'block' : 'none' }}
+        style={{ display: isError ? "block" : "none" }}
       >
         Kindly fill all the fields to submit!
       </p>
       <p
         className="alert alert-danger text-center"
-        style={{ display: isConfirmPasswordError ? 'block' : 'none' }}
+        style={{ display: isConfirmPasswordError ? "block" : "none" }}
       >
         Confirm password and password must be same.
       </p>
       <p
         className="alert alert-success text-center"
-        style={{ display: isSubmit ? 'block' : 'none' }}
+        style={{ display: isSubmit ? "block" : "none" }}
       >
         Form is submitted successfully!
       </p>
@@ -94,6 +87,8 @@ function Signup() {
                 aria-describedby="email"
                 onChange={handleChanges}
                 value={formData.email}
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                title="Kindly enter the valid email id"
               />
             </div>
             <div className="form-group">
@@ -122,6 +117,8 @@ function Signup() {
                 aria-describedby="password"
                 onChange={handleChanges}
                 value={formData.password}
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$"
+                title="Note : Your password must be minimum 8 charachters and it should contain atleast one special charachter, one Small Alphabet and one Caps Alphabet"
               />
             </div>
             <div className="form-group">

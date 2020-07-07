@@ -21,9 +21,6 @@ function Login(props) {
     } else {
       setIsSubmit(false);
       setIsFormError(true);
-      setTimeout(() => {
-        setIsFormError(false);
-      }, 1500);
     }
   }
 
@@ -55,17 +52,11 @@ function Login(props) {
         console.log('failure');
         setIsSubmit(false);
         setIsValidationError(true);
-        setTimeout(() => {
-          setIsValidationError(false);
-        }, 1500);
       }
     } else {
       console.log('failure');
       setIsSubmit(false);
       setIsValidationError(true);
-      setTimeout(() => {
-        setIsValidationError(false);
-      }, 1500);
     }
   }
 
