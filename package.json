@@ -1,24 +1,20 @@
 {
   "name": "assignment",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "main": "src/index.js",
+  "private": true,
+  "main": "server.js",
   "dependencies": {
-    "@material-ui/core": "4.10.2",
-    "@material-ui/icons": "4.9.1",
-    "axios": "0.19.2",
+    "axios": "0.26.0",
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "react-router-dom": "5.2.0",
-    "react-scripts": "^2.1.8",
-    "redux": "^4.0.5"
+    "react-router-dom": "6.2.1",
+    "react-scripts": "^4.0.3",
+    "express": "4.17.3"
   },
-  "devDependencies": {
-    "typescript": "3.8.3"
-  },
+  "proxy": "http://localhost:3001",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

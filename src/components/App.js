@@ -1,110 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Redirect, Switch } from 'react-router-dom';
-import PersonIcon from '@material-ui/icons/Person';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Home from './Home';
-import Login from './Login';
-import Signup from './Signup';
-import store from '../store';
-import useIsMounted from '../useIsMounted';
-
-var signupDetails = [];
-var loginDetails;
-var loginName;
-
+import axios from 'axios';
+import '../styles.css';
+let defaultData;
 function App() {
-  const [name, setName] = useState(false);
-  const isMounted = useIsMounted();
-  console.log('App mounted is-->', isMounted.current);
-
-  function getSignupDetails() {
-    store.subscribe(() => {
-      console.log('signup state-->', store.getState().data);
-      signupDetails.push(store.getState().data);
-    });
-  }
-
-  function getLoginDetails() {
-    store.subscribe(() => {
-      console.log('login state-->', store.getState().loginData);
-      loginDetails = store.getState().loginData;
-      console.log('loginDetails-->', loginDetails);
-      if (loginDetails) {
-        setName(true);
-        loginName = loginDetails[0].name;
-      }
-    });
-  }
-
+  const [data, setData] = useState([]);
+  const [filterSearchValue, setFilterSearchValue] = useState('');
   useEffect(() => {
-    getSignupDetails();
-    getLoginDetails();
+    axios.get('/api').then((res) => {
+      defaultData = res.data.apiResponse;
+      if (defaultData.length > 0) {
+        defaultData = defaultData.map((x) => {
+          return {
+            id: x.id,
+            name: x.name,
+            phone: x.phone,
+            username: x.username,
+            website: x.website,
+            email: x.email,
+            company: x.company.name,
+            address: `${x.address.suite} ${x.address.street} ${x.address.city} ${x.address.zipcode}`,
+          };
+        });
+      }
+      setData(defaultData);
+    });
   }, []);
 
+  const checkTextValue = (e) => {
+    if (e) {
+      const { value } = e.target;
+      if (value) {
+        setFilterSearchValue(value);
+        let modifiedData = data.slice();
+        modifiedData = modifiedData.filter((x) => {
+          return Object.values(x)
+            .join(' ')
+            .toLowerCase()
+            .includes(filterSearchValue.toLowerCase());
+        });
+        setData(modifiedData);
+      } else {
+        setFilterSearchValue('');
+        setData(defaultData);
+      }
+    } else {
+      setFilterSearchValue('');
+      setData(defaultData);
+    }
+  };
+  function tableData() {
+    if (data.length > 0) {
+      return data.map((x) => {
+        return (
+          <tr key={x.id}>
+            <td>{x.id}</td>
+            <td>{x.name}</td>
+            <td>{x.phone}</td>
+            <td>{x.username}</td>
+            <td>{x.website}</td>
+            <td>{x.email}</td>
+            <td>{x.company}</td>
+            <td>{x.address}</td>
+          </tr>
+        );
+      });
+    }
+  }
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <Link className="navbar-brand" to="/home">
-          Assignment 2
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to="/home">
-                Home <span className="sr-only">(current)</span>
-              </Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav ml-auto">
-            <li
-              className="nav-item"
-              style={{ display: name ? 'none' : 'block' }}
-            >
-              <Link className="nav-link" to="/signup">
-                <PersonIcon /> Signup
-              </Link>
-            </li>
-            <li
-              className="nav-item"
-              style={{ display: name ? 'none' : 'block' }}
-            >
-              <Link className="nav-link" to="/login">
-                <ExitToAppIcon /> Login
-              </Link>
-            </li>
-            <li
-              className="nav-item"
-              style={{ display: name ? 'block' : 'none' }}
-            >
-              <Link className="nav-link" to="/home">
-                {loginName}
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Route path="/home" render={() => <Home homeProps={loginDetails} />} />
-        <Route path="/signup" component={Signup} />
-        <Route
-          path="/login"
-          render={() => <Login loginProps={signupDetails} />}
+    <>
+      <div style={{ marginTop: '10px', textAlign: 'center' }}>
+        <input
+          aria-label="Search"
+          type="text"
+          value={filterSearchValue}
+          onChange={(e) => checkTextValue(e)}
         />
-      </Switch>
-    </div>
+      </div>
+      {data.length ? (
+        <div style={{ marginTop: '10px' }}>
+          <table style={{ width: '100%', textAlign: 'center' }}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Username</th>
+                <th>Website</th>
+                <th>Email</th>
+                <th>Company Name</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>{tableData()}</tbody>
+          </table>
+        </div>
+      ) : (
+        `.... is Loading ...`
+      )}
+    </>
   );
 }
-
 export default App;

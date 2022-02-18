@@ -1,3 +1,5 @@
-.para{
-    margin-right: 69%;
+table,
+th,
+td {
+  border: 2px solid black;
 }
