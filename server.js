@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const PORT = process.env.PORT || 3001;
 const app = express();
-app.use(express.static('build'));
+app.use(express.static(path.resolve(__dirname, 'build')));
 app.get('/api', async (req, res) => {
   try {
     let apiResponse;
@@ -21,7 +21,7 @@ app.get('/api', async (req, res) => {
   }
 });
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build/assignment/index.html'));
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 app.listen(PORT, () => {
   console.log('server listening on port', PORT);
